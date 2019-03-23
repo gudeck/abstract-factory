@@ -12,7 +12,7 @@ import control.ControleVisao;
  * @author gudeck
  */
 public class JFRPrincipal extends javax.swing.JFrame {
-    
+
     private ControleVisao controladorVisao;
 
     /**
@@ -35,6 +35,8 @@ public class JFRPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuiCadastroCliente = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        mnuiConsultaCLiente = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,6 +51,18 @@ public class JFRPrincipal extends javax.swing.JFrame {
         jMenu1.add(mnuiCadastroCliente);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Consulta");
+
+        mnuiConsultaCLiente.setText("Cliente");
+        mnuiConsultaCLiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuiConsultaCLienteActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuiConsultaCLiente);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -70,9 +84,15 @@ public class JFRPrincipal extends javax.swing.JFrame {
         controladorVisao.cadastroCliente();
     }//GEN-LAST:event_mnuiCadastroClienteActionPerformed
 
+    private void mnuiConsultaCLienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuiConsultaCLienteActionPerformed
+        controladorVisao.consultaCliente();
+    }//GEN-LAST:event_mnuiConsultaCLienteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem mnuiCadastroCliente;
+    private javax.swing.JMenuItem mnuiConsultaCLiente;
     // End of variables declaration//GEN-END:variables
 }
