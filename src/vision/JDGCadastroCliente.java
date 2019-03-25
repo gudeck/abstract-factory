@@ -6,8 +6,10 @@
 package vision;
 
 import control.ControleVisao;
+import domain.Cliente;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -255,7 +257,16 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         controladorVisao.buscaCliente();
-        controladorVisao.getCliente();
+        Cliente cliente = controladorVisao.getCliente();
+        if (cliente != null){
+            txtNome.setText(cliente.getNome());
+            ftxtCpf.setText(cliente.getCpf());
+            SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
+            ftxtDataNascimento.setText(formatPattern.parse(cliente.getDataNascimento()));
+            ftxtTelefone.setText(cliente.getTelefone());
+            txtEmail.setText(cliente.getEmail());
+            txtEndereco.setText(cliente.getEndereco());
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
