@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -51,7 +52,7 @@ public class ControleDominio {
             cliente = new Cliente();
             cliente.setNome(resultadoPesquisa.getString("nome"));
             cliente.setCpf(resultadoPesquisa.getString("cpf"));
-            cliente.setDataNascimento(resultadoPesquisa.getString("dataNascimento"));
+            cliente.setDataNascimento(resultadoPesquisa.getDate("dataNascimento"));
             cliente.setSexo(resultadoPesquisa.getString("sexo").charAt(0));
             cliente.setEndereco(resultadoPesquisa.getString("endereco"));
             cliente.setEmail(resultadoPesquisa.getString("email"));
@@ -75,13 +76,7 @@ public class ControleDominio {
             cliente = new Cliente();
             cliente.setNome(resultadoPesquisa.getString("nome"));
             cliente.setCpf(resultadoPesquisa.getString("cpf"));
-
-            data = resultadoPesquisa.getString("dataNascimento");
-            dia = data.substring(8, 10);
-            mes = data.substring(5, 7);
-            ano = data.substring(0, 4);
-            cliente.setDataNascimento(dia + "/" + mes + "/" + ano);
-
+            cliente.setDataNascimento((Date)resultadoPesquisa.getDate("dataNascimento"));
             cliente.setSexo(resultadoPesquisa.getString("sexo").charAt(0));
             cliente.setEndereco(resultadoPesquisa.getString("endereco"));
             cliente.setTelefone(resultadoPesquisa.getString("telefone"));

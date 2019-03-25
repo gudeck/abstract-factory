@@ -5,6 +5,8 @@
  */
 package domain;
 
+import java.util.Date;
+
 /**
  *
  * @author gudeck
@@ -14,7 +16,7 @@ public class Cliente {
     private int codCliente;
     private String nome;
     private String cpf;
-    private String dataNascimento;
+    private Date dataNascimento;
     private char sexo;
     private String endereco;
     private String telefone;
@@ -44,11 +46,11 @@ public class Cliente {
         this.cpf = cpf;
     }
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
