@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private ControleVisao controladorVisao;
+    ArrayList resultadoBusca;
 
     /**
      * Creates new form JDGBuscaCliente
@@ -48,6 +49,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
         tblNome = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Buscar Cliente");
 
         jLabel1.setText("Nome");
 
@@ -141,7 +143,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
         String nome = txtNome.getText();
-        ArrayList resultadoBusca = new ArrayList();
+        resultadoBusca = new ArrayList();
         DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
 
         if (nome.isEmpty()) {
@@ -166,7 +168,8 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
         if (tblNome.getSelectedRow() > -1) {
-
+             //controladorVisao.setCliente((Cliente)resultadoBusca.get(tblNome.getSelectedRow()));
+             this.dispose();
         }
     }//GEN-LAST:event_btnSelecionarActionPerformed
 

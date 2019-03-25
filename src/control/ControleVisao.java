@@ -67,21 +67,25 @@ public class ControleVisao {
 
     public void janelaPrincipal() {
         janelaPrincipal = new JFRPrincipal(this);
+        janelaPrincipal.setLocationRelativeTo(null);
         janelaPrincipal.setVisible(true);
     }
 
     public void cadastroCliente() {
         JDGCadastroCliente cadastroCliente = new JDGCadastroCliente(janelaPrincipal, true, this);
+        cadastroCliente.setLocationRelativeTo(null);
         cadastroCliente.setVisible(true);
     }
 
     public void buscaCliente() {
         JDGBuscaCliente buscaCliente = new JDGBuscaCliente(janelaPrincipal, true, this);
+        buscaCliente.setLocationRelativeTo(null);
         buscaCliente.setVisible(true);
     }
 
     public void consultaCliente() {
         JDGConsultaCliente consultaCliente = new JDGConsultaCliente(janelaPrincipal, true, this);
+        consultaCliente.setLocationRelativeTo(null);
         consultaCliente.setVisible(true);
     }
 
