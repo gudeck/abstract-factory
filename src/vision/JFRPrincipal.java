@@ -39,6 +39,7 @@ public class JFRPrincipal extends javax.swing.JFrame {
         mnuiConsultaCLiente = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Anarriê");
 
         jMenu1.setText("Cadastro");
 
