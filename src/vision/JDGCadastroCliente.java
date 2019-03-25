@@ -6,11 +6,8 @@
 package vision;
 
 import control.ControleVisao;
-import java.awt.Component;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -234,7 +231,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos.", "ERRO!", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                controladorVisao.clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
 
                 txtNome.setText("");
                 ftxtCpf.setText("");
@@ -256,6 +253,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         controladorVisao.buscaCliente();
+        controladorVisao.getCliente();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

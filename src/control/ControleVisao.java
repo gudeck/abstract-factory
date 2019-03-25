@@ -5,9 +5,7 @@
  */
 package control;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
+import domain.Cliente;
 import vision.*;
 
 /**
@@ -48,13 +46,23 @@ public class ControleVisao {
 
     private ControleDominio dominioCtlr;
     private JFRPrincipal janelaPrincipal;
+    private Cliente objetoCliente;
 
     public ControleVisao() {
         dominioCtlr = new ControleDominio();
+        objetoCliente = new Cliente();
     }
 
     public ControleDominio getControleDominio() {
         return dominioCtlr;
+    }
+    
+    public Cliente getCliente(){
+        return objetoCliente;
+    }
+    
+    public void setCliente(Cliente cliente){
+        this.objetoCliente = cliente;
     }
 
     public void janelaPrincipal() {
@@ -70,18 +78,6 @@ public class ControleVisao {
     public void buscaCliente() {
         JDGBuscaCliente buscaCliente = new JDGBuscaCliente(janelaPrincipal, true, this);
         buscaCliente.setVisible(true);
-    }
-
-    public void clienteCreate(String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
-        dominioCtlr.clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
-    }
-
-    public ArrayList clienteRead(String nome) throws SQLException {
-        return dominioCtlr.clienteRead(nome);
-    }
-
-    public ArrayList clienteConsulta(String nome, String endereco, String anoNascimento) throws SQLException {
-        return dominioCtlr.clienteConsulta(nome, endereco, anoNascimento);
     }
 
     public void consultaCliente() {

@@ -8,16 +8,11 @@ package control;
 import dao.*;
 import domain.*;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -80,13 +75,13 @@ public class ControleDominio {
             cliente = new Cliente();
             cliente.setNome(resultadoPesquisa.getString("nome"));
             cliente.setCpf(resultadoPesquisa.getString("cpf"));
-            
+
             data = resultadoPesquisa.getString("dataNascimento");
             dia = data.substring(8, 10);
             mes = data.substring(5, 7);
             ano = data.substring(0, 4);
             cliente.setDataNascimento(dia + "/" + mes + "/" + ano);
-            
+
             cliente.setSexo(resultadoPesquisa.getString("sexo").charAt(0));
             cliente.setEndereco(resultadoPesquisa.getString("endereco"));
             cliente.setTelefone(resultadoPesquisa.getString("telefone"));

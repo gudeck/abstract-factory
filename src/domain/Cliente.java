@@ -5,8 +5,6 @@
  */
 package domain;
 
-import java.util.Calendar;
-
 /**
  *
  * @author gudeck

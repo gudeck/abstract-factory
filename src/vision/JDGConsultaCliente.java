@@ -9,8 +9,6 @@ import control.ControleVisao;
 import domain.Cliente;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -156,7 +154,7 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
         } else {
 
             try {
-                resultadoPesquisa = controladorVisao.clienteConsulta(nome, endereco, anoNascimento);
+                resultadoPesquisa = controladorVisao.getControleDominio().clienteConsulta(nome, endereco, anoNascimento);
 
                 tabela.setRowCount(0);
                 for (int i = 0; i < resultadoPesquisa.size(); i++) {
@@ -166,7 +164,7 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
                         ((Cliente) resultadoPesquisa.get(i)).getTelefone(),
                         ((Cliente) resultadoPesquisa.get(i)).getEmail()});
                 }
-                
+
                 txtNome.setText("");
                 txtEndereco.setText("");
                 ftxtAnoNascimento.setText("");
@@ -175,7 +173,6 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Erro ao pesquisar: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 

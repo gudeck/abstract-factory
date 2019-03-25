@@ -149,7 +149,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
         } else {
             try {
                 tabela.setRowCount(0);
-                resultadoBusca = controladorVisao.clienteRead(nome);
+                resultadoBusca = controladorVisao.getControleDominio().clienteRead(nome);
                 for (int i = 0; i < resultadoBusca.size(); i++) {
                     tabela.addRow(new Object[]{((Cliente) resultadoBusca.get(i)).getNome(), ((Cliente) resultadoBusca.get(i)).getCpf()});
                 }
