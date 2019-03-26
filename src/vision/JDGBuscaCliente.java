@@ -168,7 +168,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
         if (tblNome.getSelectedRow() > -1) {
-             //controladorVisao.setCliente((Cliente)resultadoBusca.get(tblNome.getSelectedRow()));
+             controladorVisao.setCliente((Cliente)resultadoBusca.get(tblNome.getSelectedRow()));
              this.dispose();
         }
     }//GEN-LAST:event_btnSelecionarActionPerformed
