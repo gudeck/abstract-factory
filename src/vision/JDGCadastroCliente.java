@@ -57,7 +57,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
-        btnSalvar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cliente");
@@ -127,12 +127,12 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             }
         });
 
-        btnSalvar.setText("Salvar");
-        btnSalvar.setEnabled(false);
-        btnSalvar.setPreferredSize(new java.awt.Dimension(80, 23));
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+        btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
+        btnAlterar.setPreferredSize(new java.awt.Dimension(80, 23));
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
+                btnAlterarActionPerformed(evt);
             }
         });
 
@@ -171,7 +171,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                             .addGroup(pnlPrincipalLayout.createSequentialGroup()
                                 .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
-                                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(8, 8, 8)
                 .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -215,7 +215,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                 .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnLimpar)
-                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -290,7 +290,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                 rdbMasculino.setSelected(true);
             }
 
-            btnSalvar.setEnabled(true);
+            btnAlterar.setEnabled(true);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -310,66 +310,59 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         limparTela();
     }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        
         String nome = txtNome.getText();
-        String endereco = txtEndereco.getText();
-        String email = txtEmail.getText();
         String cpf = ftxtCpf.getText();
         String dataNascimento = ftxtDataNascimento.getText();
-        String dataNascimentoSql;
-        String telefone = ftxtTelefone.getText();
         char sexo = '\0';
-        if (rdbFeminino.isSelected() || rdbMasculino.isSelected()) {
-            sexo = (char) grpSexo.getSelection().getMnemonic();
+        String endereco = txtEndereco.getText();
+        String telefone = ftxtTelefone.getText();
+        String email = txtEmail.getText();
+        if(rdbFeminino.isSelected() || rdbMasculino.isSelected()){
+            sexo = (char)grpSexo.getSelection().getMnemonic();
         }
-
-        cpf = cpf.replace(".", "").replace("-", "");
-        telefone = telefone.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-        SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-        dataNascimentoSql = formatPattern.format(controladorVisao.getCliente().getDataNascimento());
         
-        if (nome.equals(controladorVisao.getCliente().getNome())) {
+        cpf = cpf.replace(".", "").replace("-", "");
+        telefone = telefone.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
+        SimpleDateFormat formatPattern = new SimpleDateFormat("yyyy-MM-dd");
+        dataNascimento = String.format(dataNascimento);
+        
+        if(nome.equals(controladorVisao.getCliente().getNome())){
             nome = null;
         }
-        if (endereco.equals(controladorVisao.getCliente().getEndereco())) {
-            endereco = null;
-        }
-        if (email.equals(controladorVisao.getCliente().getEmail())) {
-            email = null;
-        }
-        if (cpf.equals(controladorVisao.getCliente().getCpf())) {
+        if(cpf.equals(controladorVisao.getCliente().getCpf())){
             cpf = null;
         }
-        System.out.println(dataNascimento.equals(dataNascimentoSql) );
-        if (dataNascimento.equals(dataNascimentoSql) || dataNascimento.equals("  /  /    ")) {
+        if(dataNascimento.equals(controladorVisao.getCliente().getDataNascimento())){
             dataNascimento = null;
         }
-        if (telefone.equals(controladorVisao.getCliente().getTelefone())) {
-            telefone = null;
-        }
-        if (sexo == controladorVisao.getCliente().getSexo()) {
+        if(sexo == controladorVisao.getCliente().getSexo()){
             sexo = '\0';
         }
-
+        if(endereco.equals(controladorVisao.getCliente().getEndereco())){
+            endereco = null;
+        }
+        if(telefone.equals(controladorVisao.getCliente().getTelefone())){
+            telefone = null;
+        }
+        if(email.equals(controladorVisao.getCliente().getEmail())){
+            email = null;
+        }
+        
         try {
-            
-        System.out.println(nome + " 1" + endereco + " 2" + cpf + " 3" + dataNascimento + " 4" + telefone + " 5" + sexo + " 6" + email + " 7");
-            controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome,
-                    endereco, email, cpf, dataNascimento, telefone, sexo);
-            JOptionPane.showMessageDialog(this, "Registro alterado com sucesso!", "", JOptionPane.OK_OPTION);
-
-            btnSalvar.setEnabled(false);
+            controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
         } catch (ParseException | SQLException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-        } 
-    }//GEN-LAST:event_btnSalvarActionPerformed
+            JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage());
+        }
+        
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnLimpar;
-    private javax.swing.JButton btnSalvar;
     private javax.swing.JFormattedTextField ftxtCpf;
     private javax.swing.JFormattedTextField ftxtDataNascimento;
     private javax.swing.JFormattedTextField ftxtTelefone;

@@ -68,18 +68,10 @@ public class ControleDominio {
     }
 
     public void clienteUpdate(int codigo, String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
-
+        
         java.sql.Date sqlDate = null;
-
-        if (cpf != null) {
-            cpf = cpf.replace(".", "").replace("-", "");
-        }
-        if (telefone != null) {
-            telefone = telefone.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-        }
-
         if (dataNascimento != null) {
-            SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatPattern = new SimpleDateFormat("dd-MM-yyyy");
             java.util.Date javaDate = formatPattern.parse(dataNascimento);
             sqlDate = new java.sql.Date(javaDate.getTime());
         }

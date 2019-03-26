@@ -50,41 +50,37 @@ public class DAOCliente {
         return result;
     }
 
-    public void update(int codigo, String nome, String endereco, String email, String cpf, Date sqlDate, String telefone, char sexo) throws SQLException, SQLException {
+    public void update(int codigo, String nome, String endereco, String email, String cpf, Date dataNascimento, String telefone, char sexo) throws SQLException, SQLException {
 
         sql = "update cliente set codCliente = " + codigo;
         statement = conexao.prepareStatement(sql);
-
-        if (nome != null) {
+        
+        if(nome != null || !nome.isEmpty()){
             sql = sql + ", nome = " + nome;
         }
-        if (endereco != null) {
-            sql = sql + ", endereco = " + endereco;
-        }
-        if (email != null){
-            sql = sql + ", email = " + email;
-        }
-        if (cpf != null) {
+        if(cpf != null || !cpf.isEmpty()){
             sql = sql + ", cpf = " + cpf;
         }
-        if (sqlDate != null) {
-            sql = sql + ", dataNascimento = " + sqlDate;
+        if(dataNascimento != null){
+            sql = sql + ", dataNascimento = " + dataNascimento;
         }
-        if (telefone != null){
-            sql = sql + ", telefone = " + telefone;
-        }
-        if (sexo != '\0') {
+        if(sexo != '\0'){
             sql = sql + ", sexo = " + sexo;
         }
-
-        sql = sql + " where codCliente = " + codigo;
-
-        System.out.println(nome + " 1" + endereco + " 2" + cpf + " 3" + sqlDate + " 4" + telefone + " 5" + sexo + " 6" + email + " 7");
-        if (nome == null && endereco == null && cpf == null && sqlDate == null && telefone == null && sexo == '\0') {
-            throw new SQLException("Nenhum campo alterado!");
-        } else {
-            statement.executeUpdate(sql);
+        if(endereco != null || !endereco.isEmpty()){
+            sql = sql + ", endereco = " + endereco;
         }
+        if(telefone != null || !telefone.isEmpty()){
+            sql = sql + ", telefone = " + telefone;
+        }
+        if(email != null || !email.isEmpty()){
+            sql = sql + ", email = " + email;
+        }
+        
+        sql = sql + " where codCliente = " + codigo;
+        
+        statement.executeUpdate(sql);
+        
     }
 
     public void delete(int codigo) throws SQLException {
