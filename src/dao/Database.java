@@ -17,12 +17,12 @@ import java.util.logging.Logger;
  */
 public class Database {
 
-    private static final String DRIVER = ("com.mysql.jdbc.Driver");
-//    private static final String DRIVER = ("com.mysql.cj.jdbc.Driver");
+//    private static final String DRIVER = ("com.mysql.jdbc.Driver");
+    private static final String DRIVER = ("com.mysql.cj.jdbc.Driver");
     private static final String IP = "localhost:3306";
     private static final String DBNAME = "bdprojetosistemas";
-    private static final String URL = "jdbc:mysql://" + IP + "/" + DBNAME;
-    //private static final String URL = "jdbc:mysql://" + IP + "/" + DBNAME + "?useTimezone=true&serverTimezone=UTC";
+//    private static final String URL = "jdbc:mysql://" + IP + "/" + DBNAME;
+    private static final String URL = "jdbc:mysql://" + IP + "/" + DBNAME + "?useTimezone=true&serverTimezone=UTC";
     private static final String LOGIN = "gustavo";
     private static final String SENHA = "+pao1234";
 

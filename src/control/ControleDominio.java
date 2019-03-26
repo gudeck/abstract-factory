@@ -21,8 +21,8 @@ import java.util.Date;
  */
 public class ControleDominio {
 
-    private Connection conexao;
-    private DAOCliente clienteDao;
+    private final Connection conexao;
+    private final DAOCliente clienteDao;
     ArrayList<Cliente> listaClientes = new ArrayList();
 
     public ControleDominio() {
@@ -50,12 +50,14 @@ public class ControleDominio {
         listaClientes.clear();
         while (resultadoPesquisa.next()) {
             cliente = new Cliente();
+            cliente.setCodCliente(resultadoPesquisa.getInt("codCliente"));
             cliente.setNome(resultadoPesquisa.getString("nome"));
             cliente.setCpf(resultadoPesquisa.getString("cpf"));
             cliente.setDataNascimento(resultadoPesquisa.getDate("dataNascimento"));
             cliente.setSexo(resultadoPesquisa.getString("sexo").charAt(0));
             cliente.setEndereco(resultadoPesquisa.getString("endereco"));
             cliente.setEmail(resultadoPesquisa.getString("email"));
+            cliente.setTelefone(resultadoPesquisa.getString("telefone"));
 
             listaClientes.add(cliente);
 
@@ -65,25 +67,29 @@ public class ControleDominio {
 
     }
 
-    public void clienteUpdate(String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException {
-            
+    public void clienteUpdate(int codigo, String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
+
         java.sql.Date sqlDate = null;
-        
-        if (!cpf.isEmpty()) {
+
+        if (cpf != null) {
             cpf = cpf.replace(".", "").replace("-", "");
         }
-        if (!telefone.isEmpty()) {
+        if (telefone != null) {
             telefone = telefone.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
         }
 
-        if (!dataNascimento.isEmpty()) {
+        if (dataNascimento != null) {
             SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
             java.util.Date javaDate = formatPattern.parse(dataNascimento);
             sqlDate = new java.sql.Date(javaDate.getTime());
         }
 
-        clienteDao.update(nome, endereco, email, cpf, sqlDate, telefone, sexo);
+        clienteDao.update(codigo, nome, endereco, email, cpf, sqlDate, telefone, sexo);
 
+    }
+
+    public void clienteDelete(Cliente cliente) throws SQLException {
+        clienteDao.delete(cliente.getCodCliente());
     }
 
     public ArrayList clienteConsulta(String nome, String endereco, String anoNascimento) throws SQLException {

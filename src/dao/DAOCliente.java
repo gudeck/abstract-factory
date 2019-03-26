@@ -17,7 +17,9 @@ import java.sql.SQLException;
  */
 public class DAOCliente {
 
-    private Connection conexao;
+    private final Connection conexao;
+    private PreparedStatement statement;
+    private String sql;
 
     public DAOCliente(Connection con) {
         conexao = con;
@@ -25,8 +27,6 @@ public class DAOCliente {
 
     public void create(String nome, String endereco, String email, String cpf, Date dataNascimento, String telefone, char sexo) throws SQLException {
 
-        PreparedStatement statement;
-        String sql;
 //                sql = "call create_cliente (?,?,?,?,?,?,?)";
         sql = "insert into cliente (nome, cpf, dataNascimento, sexo, endereco, telefone, email) values(?,?,?,?,?,?,?)";
         statement = conexao.prepareStatement(sql);
@@ -42,33 +42,63 @@ public class DAOCliente {
     }
 
     public ResultSet read(String nome) throws SQLException {
-        PreparedStatement statement;
-        String sql;
-        ResultSet result = null;
-//                sql = "call create_cliente (?,?,?,?,?,?,?)";
+
+        ResultSet result;
         sql = "select * from cliente where nome like '%" + nome + "%'";
         statement = conexao.prepareStatement(sql);
         result = statement.executeQuery();
         return result;
     }
 
-    public void update(String nome, String endereco, String email, String cpf, Date sqlDate, String telefone, char sexo) {
-        PreparedStatement statement;
-        String sql;
+    public void update(int codigo, String nome, String endereco, String email, String cpf, Date sqlDate, String telefone, char sexo) throws SQLException, SQLException {
 
-        sql = "update cliente set 1 = 1 ";
+        sql = "update cliente set codCliente = " + codigo;
         statement = conexao.prepareStatement(sql);
-        
-        if(!nome.isEmpty()){
-            sql = sql + "and no"
+
+        if (nome != null) {
+            sql = sql + ", nome = " + nome;
         }
+        if (endereco != null) {
+            sql = sql + ", endereco = " + endereco;
+        }
+        if (email != null){
+            sql = sql + ", email = " + email;
+        }
+        if (cpf != null) {
+            sql = sql + ", cpf = " + cpf;
+        }
+        if (sqlDate != null) {
+            sql = sql + ", dataNascimento = " + sqlDate;
+        }
+        if (telefone != null){
+            sql = sql + ", telefone = " + telefone;
+        }
+        if (sexo != '\0') {
+            sql = sql + ", sexo = " + sexo;
+        }
+
+        sql = sql + " where codCliente = " + codigo;
+
+        System.out.println(nome + " 1" + endereco + " 2" + cpf + " 3" + sqlDate + " 4" + telefone + " 5" + sexo + " 6" + email + " 7");
+        if (nome == null && endereco == null && cpf == null && sqlDate == null && telefone == null && sexo == '\0') {
+            throw new SQLException("Nenhum campo alterado!");
+        } else {
+            statement.executeUpdate(sql);
+        }
+    }
+
+    public void delete(int codigo) throws SQLException {
+
+        sql = "delete from cliente where codCliente = " + codigo;
+        System.out.println(codigo);
+        statement = conexao.prepareStatement(sql);
+        statement.executeUpdate();
+
     }
 
     public ResultSet consulta(String nome, String endereco, String anoNascimento) throws SQLException {
 
-        PreparedStatement statement;
-        String sql;
-        ResultSet result = null;
+        ResultSet result;
 
         sql = "select * from cliente where 1=1";
         statement = conexao.prepareStatement(sql);

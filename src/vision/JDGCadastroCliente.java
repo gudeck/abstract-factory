@@ -20,11 +20,8 @@ import javax.swing.JOptionPane;
  */
 public class JDGCadastroCliente extends javax.swing.JDialog {
 
-    private ControleVisao controladorVisao;
+    private final ControleVisao controladorVisao;
 
-    /**
-     * Creates new form JDGCadastroCliente
-     */
     public JDGCadastroCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         super(parent, modal);
         initComponents();
@@ -132,6 +129,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
         btnSalvar.setText("Salvar");
         btnSalvar.setEnabled(false);
+        btnSalvar.setPreferredSize(new java.awt.Dimension(80, 23));
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -163,18 +161,18 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                             .addComponent(ftxtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                                .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEmail)
                             .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSalvar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtEmail))))
+                                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(8, 8, 8)
                 .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -217,7 +215,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                 .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnLimpar)
-                    .addComponent(btnSalvar)))
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -263,12 +261,12 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         } else {
             try {
                 controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                JOptionPane.showMessageDialog(this, "Registro inserido com sucesso!", "", JOptionPane.OK_OPTION);
+
                 limparTela();
 
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+            } catch (ParseException | SQLException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -285,6 +283,12 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             ftxtTelefone.setText(cliente.getTelefone());
             txtEmail.setText(cliente.getEmail());
             txtEndereco.setText(cliente.getEndereco());
+            grpSexo.clearSelection();
+            if (cliente.getSexo() == 'F') {
+                rdbFeminino.setSelected(true);
+            } else {
+                rdbMasculino.setSelected(true);
+            }
 
             btnSalvar.setEnabled(true);
         }
@@ -313,42 +317,52 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         String email = txtEmail.getText();
         String cpf = ftxtCpf.getText();
         String dataNascimento = ftxtDataNascimento.getText();
+        String dataNascimentoSql;
         String telefone = ftxtTelefone.getText();
         char sexo = '\0';
         if (rdbFeminino.isSelected() || rdbMasculino.isSelected()) {
             sexo = (char) grpSexo.getSelection().getMnemonic();
         }
 
+        cpf = cpf.replace(".", "").replace("-", "");
+        telefone = telefone.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+        SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
+        dataNascimentoSql = formatPattern.format(controladorVisao.getCliente().getDataNascimento());
+        
         if (nome.equals(controladorVisao.getCliente().getNome())) {
-            nome = "";
+            nome = null;
         }
         if (endereco.equals(controladorVisao.getCliente().getEndereco())) {
-            endereco = "";
+            endereco = null;
         }
         if (email.equals(controladorVisao.getCliente().getEmail())) {
-            email = "";
+            email = null;
         }
         if (cpf.equals(controladorVisao.getCliente().getCpf())) {
-            cpf = "";
+            cpf = null;
         }
-        SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-        if (dataNascimento.equals(formatPattern.format(controladorVisao.getCliente().getDataNascimento()))) {
-            dataNascimento = "";
+        System.out.println(dataNascimento.equals(dataNascimentoSql) );
+        if (dataNascimento.equals(dataNascimentoSql) || dataNascimento.equals("  /  /    ")) {
+            dataNascimento = null;
         }
-        if (telefone.equals(controladorVisao.getCliente().getNome())) {
-            telefone = "";
+        if (telefone.equals(controladorVisao.getCliente().getTelefone())) {
+            telefone = null;
         }
         if (sexo == controladorVisao.getCliente().getSexo()) {
             sexo = '\0';
         }
 
         try {
-            controladorVisao.getControleDominio().clienteUpdate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
-        } catch (ParseException ex) {
-            Logger.getLogger(JDGCadastroCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            
+        System.out.println(nome + " 1" + endereco + " 2" + cpf + " 3" + dataNascimento + " 4" + telefone + " 5" + sexo + " 6" + email + " 7");
+            controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome,
+                    endereco, email, cpf, dataNascimento, telefone, sexo);
+            JOptionPane.showMessageDialog(this, "Registro alterado com sucesso!", "", JOptionPane.OK_OPTION);
 
-        btnSalvar.setEnabled(false);
+            btnSalvar.setEnabled(false);
+        } catch (ParseException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        } 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
