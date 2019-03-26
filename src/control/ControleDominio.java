@@ -65,6 +65,27 @@ public class ControleDominio {
 
     }
 
+    public void clienteUpdate(String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException {
+            
+        java.sql.Date sqlDate = null;
+        
+        if (!cpf.isEmpty()) {
+            cpf = cpf.replace(".", "").replace("-", "");
+        }
+        if (!telefone.isEmpty()) {
+            telefone = telefone.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+        }
+
+        if (!dataNascimento.isEmpty()) {
+            SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date javaDate = formatPattern.parse(dataNascimento);
+            sqlDate = new java.sql.Date(javaDate.getTime());
+        }
+
+        clienteDao.update(nome, endereco, email, cpf, sqlDate, telefone, sexo);
+
+    }
+
     public ArrayList clienteConsulta(String nome, String endereco, String anoNascimento) throws SQLException {
 
         ResultSet resultadoPesquisa = clienteDao.consulta(nome, endereco, anoNascimento);
@@ -76,7 +97,7 @@ public class ControleDominio {
             cliente = new Cliente();
             cliente.setNome(resultadoPesquisa.getString("nome"));
             cliente.setCpf(resultadoPesquisa.getString("cpf"));
-            cliente.setDataNascimento((Date)resultadoPesquisa.getDate("dataNascimento"));
+            cliente.setDataNascimento((Date) resultadoPesquisa.getDate("dataNascimento"));
             cliente.setSexo(resultadoPesquisa.getString("sexo").charAt(0));
             cliente.setEndereco(resultadoPesquisa.getString("endereco"));
             cliente.setTelefone(resultadoPesquisa.getString("telefone"));

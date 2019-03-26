@@ -52,6 +52,18 @@ public class DAOCliente {
         return result;
     }
 
+    public void update(String nome, String endereco, String email, String cpf, Date sqlDate, String telefone, char sexo) {
+        PreparedStatement statement;
+        String sql;
+
+        sql = "update cliente set 1 = 1 ";
+        statement = conexao.prepareStatement(sql);
+        
+        if(!nome.isEmpty()){
+            sql = sql + "and no"
+        }
+    }
+
     public ResultSet consulta(String nome, String endereco, String anoNascimento) throws SQLException {
 
         PreparedStatement statement;
