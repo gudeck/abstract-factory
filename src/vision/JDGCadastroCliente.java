@@ -62,7 +62,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cliente");
 
-        jLabel4.setText("Endereço");
+        jLabel4.setText("Endereï¿½o");
 
         jLabel1.setText("Nome");
 
@@ -258,6 +258,8 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
         if (campoVazio) {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos.", "ERRO!", JOptionPane.ERROR_MESSAGE);
+        } else if (!cpfValido()) {
+            JOptionPane.showMessageDialog(this, "Informe um CPF vÃ¡lido.", "ERRO!", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
                 controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
@@ -294,6 +296,48 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private boolean cpfValido(){
+        String cpf = ftxtCpf.getText();
+        cpf = cpf.replace("-", "").replace(".", "");
+        boolean ehDiferente = false;
+        double resultado = 0;
+        int num = 10;
+        
+        char [] arrayCpf = cpf.toCharArray();
+        int[] cpfInt = new int[arrayCpf.length];
+        
+        for (int i = 0; i < arrayCpf.length; i++) {
+            cpfInt[i] = Integer.parseInt(String.valueOf(arrayCpf[i]));
+        }
+        
+        for(int i = 0; i < 10; i++){
+            if(cpfInt[i] != cpfInt[i + 1])
+                ehDiferente = true;
+        }
+        if(!ehDiferente)
+            return false;
+        else{
+            for(int i = 0; i < 9; i++){
+                resultado += cpfInt[i] * num--;
+            }
+            resultado = (resultado * 10) % 11;
+            
+            if(resultado != cpfInt[9])
+                return false;
+            
+            num = 11;
+            resultado = 0;
+            for(int i = 0; i < 10; i++){
+                resultado += cpfInt[i] * num--;
+            }
+            resultado = (resultado * 10) % 11;
+            
+            if(resultado != cpfInt[10])
+                return false;
+        }
+        return true;
+    }
+    
     private void limparTela() {
         txtNome.setText("");
         ftxtCpf.setText("");
