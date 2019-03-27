@@ -62,7 +62,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cliente");
 
-        jLabel4.setText("EndereÃ§o");
+        jLabel4.setText("Endereço");
 
         jLabel1.setText("Nome");
 
