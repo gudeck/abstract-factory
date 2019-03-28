@@ -10,8 +10,6 @@ import domain.Cliente;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -296,48 +294,51 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private boolean cpfValido(){
+    private boolean cpfValido() {
         String cpf = ftxtCpf.getText();
         cpf = cpf.replace("-", "").replace(".", "");
         boolean ehDiferente = false;
         double resultado = 0;
         int num = 10;
-        
-        char [] arrayCpf = cpf.toCharArray();
+
+        char[] arrayCpf = cpf.toCharArray();
         int[] cpfInt = new int[arrayCpf.length];
-        
+
         for (int i = 0; i < arrayCpf.length; i++) {
             cpfInt[i] = Integer.parseInt(String.valueOf(arrayCpf[i]));
         }
-        
-        for(int i = 0; i < 10; i++){
-            if(cpfInt[i] != cpfInt[i + 1])
+
+        for (int i = 0; i < 10; i++) {
+            if (cpfInt[i] != cpfInt[i + 1]) {
                 ehDiferente = true;
+            }
         }
-        if(!ehDiferente)
+        if (!ehDiferente) {
             return false;
-        else{
-            for(int i = 0; i < 9; i++){
+        } else {
+            for (int i = 0; i < 9; i++) {
                 resultado += cpfInt[i] * num--;
             }
             resultado = (resultado * 10) % 11;
-            
-            if(resultado != cpfInt[9])
+
+            if (resultado != cpfInt[9]) {
                 return false;
-            
+            }
+
             num = 11;
             resultado = 0;
-            for(int i = 0; i < 10; i++){
+            for (int i = 0; i < 10; i++) {
                 resultado += cpfInt[i] * num--;
             }
             resultado = (resultado * 10) % 11;
-            
-            if(resultado != cpfInt[10])
+
+            if (resultado != cpfInt[10]) {
                 return false;
+            }
         }
         return true;
     }
-    
+
     private void limparTela() {
         txtNome.setText("");
         ftxtCpf.setText("");
@@ -355,7 +356,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        
+
         String nome = txtNome.getText();
         String cpf = ftxtCpf.getText();
         String dataNascimento = ftxtDataNascimento.getText();
@@ -363,43 +364,43 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         String endereco = txtEndereco.getText();
         String telefone = ftxtTelefone.getText();
         String email = txtEmail.getText();
-        if(rdbFeminino.isSelected() || rdbMasculino.isSelected()){
-            sexo = (char)grpSexo.getSelection().getMnemonic();
+        if (rdbFeminino.isSelected() || rdbMasculino.isSelected()) {
+            sexo = (char) grpSexo.getSelection().getMnemonic();
         }
-        
+
         cpf = cpf.replace(".", "").replace("-", "");
         telefone = telefone.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
         SimpleDateFormat formatPattern = new SimpleDateFormat("yyyy-MM-dd");
         dataNascimento = String.format(dataNascimento);
-        
-        if(nome.equals(controladorVisao.getCliente().getNome())){
+
+        if (nome.equals(controladorVisao.getCliente().getNome())) {
             nome = null;
         }
-        if(cpf.equals(controladorVisao.getCliente().getCpf())){
+        if (cpf.equals(controladorVisao.getCliente().getCpf())) {
             cpf = null;
         }
-        if(dataNascimento.equals(controladorVisao.getCliente().getDataNascimento())){
+        if (dataNascimento.equals(controladorVisao.getCliente().getDataNascimento())) {
             dataNascimento = null;
         }
-        if(sexo == controladorVisao.getCliente().getSexo()){
+        if (sexo == controladorVisao.getCliente().getSexo()) {
             sexo = '\0';
         }
-        if(endereco.equals(controladorVisao.getCliente().getEndereco())){
+        if (endereco.equals(controladorVisao.getCliente().getEndereco())) {
             endereco = null;
         }
-        if(telefone.equals(controladorVisao.getCliente().getTelefone())){
+        if (telefone.equals(controladorVisao.getCliente().getTelefone())) {
             telefone = null;
         }
-        if(email.equals(controladorVisao.getCliente().getEmail())){
+        if (email.equals(controladorVisao.getCliente().getEmail())) {
             email = null;
         }
-        
+
         try {
             controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
         } catch (ParseException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage());
         }
-        
+
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

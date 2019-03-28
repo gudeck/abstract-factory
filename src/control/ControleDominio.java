@@ -68,7 +68,7 @@ public class ControleDominio {
     }
 
     public void clienteUpdate(int codigo, String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
-        
+
         java.sql.Date sqlDate = null;
         if (dataNascimento != null) {
             SimpleDateFormat formatPattern = new SimpleDateFormat("dd-MM-yyyy");

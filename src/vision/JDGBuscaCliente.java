@@ -189,7 +189,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         controladorVisao.setCliente(null);
         DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
-        
+
         if (tblNome.getSelectedRow() > -1) {
             try {
                 controladorVisao.getControleDominio().clienteDelete(((Cliente) resultadoBusca.get(tblNome.getSelectedRow())));

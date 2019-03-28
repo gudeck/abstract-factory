@@ -54,33 +54,33 @@ public class DAOCliente {
 
         sql = "update cliente set codCliente = " + codigo;
         statement = conexao.prepareStatement(sql);
-        
-        if(nome != null || !nome.isEmpty()){
+
+        if (nome != null || !nome.isEmpty()) {
             sql = sql + ", nome = " + nome;
         }
-        if(cpf != null || !cpf.isEmpty()){
+        if (cpf != null || !cpf.isEmpty()) {
             sql = sql + ", cpf = " + cpf;
         }
-        if(dataNascimento != null){
+        if (dataNascimento != null) {
             sql = sql + ", dataNascimento = " + dataNascimento;
         }
-        if(sexo != '\0'){
+        if (sexo != '\0') {
             sql = sql + ", sexo = " + sexo;
         }
-        if(endereco != null || !endereco.isEmpty()){
+        if (endereco != null || !endereco.isEmpty()) {
             sql = sql + ", endereco = " + endereco;
         }
-        if(telefone != null || !telefone.isEmpty()){
+        if (telefone != null || !telefone.isEmpty()) {
             sql = sql + ", telefone = " + telefone;
         }
-        if(email != null || !email.isEmpty()){
+        if (email != null || !email.isEmpty()) {
             sql = sql + ", email = " + email;
         }
-        
+
         sql = sql + " where codCliente = " + codigo;
-        
+
         statement.executeUpdate(sql);
-        
+
     }
 
     public void delete(int codigo) throws SQLException {
