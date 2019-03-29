@@ -69,14 +69,17 @@ public class ControleDominio {
 
     public void clienteUpdate(int codigo, String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
 
-        java.sql.Date sqlDate = null;
-        if (dataNascimento != null) {
-            SimpleDateFormat formatPattern = new SimpleDateFormat("dd-MM-yyyy");
-            java.util.Date javaDate = formatPattern.parse(dataNascimento);
-            sqlDate = new java.sql.Date(javaDate.getTime());
-        }
+        
+        cpf = cpf.replace(".", "").replace("-", "");
+        telefone = telefone.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
 
-        clienteDao.update(codigo, nome, endereco, email, cpf, sqlDate, telefone, sexo);
+        SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date javaDate = formatPattern.parse(dataNascimento);
+        
+        Cliente cliente = new Cliente(codigo, nome, cpf, javaDate, sexo, endereco, telefone, email);
+        
+        
+        clienteDao.update(cliente);
 
     }
 
@@ -109,4 +112,10 @@ public class ControleDominio {
 
     }
 
+    public int cpfConsulta(String cpf) throws SQLException{
+        cpf = cpf.replace(".", "").replace("-", "");
+        
+        return clienteDao.cpfConsulta(cpf);
+    }
+    
 }

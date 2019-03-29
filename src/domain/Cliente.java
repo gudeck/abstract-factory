@@ -22,6 +22,20 @@ public class Cliente {
     private String telefone;
     private String email;
 
+    public Cliente(int codCliente, String nome, String cpf, Date dataNascimento, char sexo, String endereco, String telefone, String email) {
+        this.codCliente = codCliente;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.sexo = sexo;
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.email = email;
+    }
+
+    public Cliente() {
+    }
+
     public int getCodCliente() {
         return codCliente;
     }
