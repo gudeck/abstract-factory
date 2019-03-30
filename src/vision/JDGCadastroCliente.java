@@ -391,21 +391,25 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         if (rdbFeminino.isSelected() || rdbMasculino.isSelected()) {
             sexo = (char) grpSexo.getSelection().getMnemonic();
         }
-
-        if (!cpf.replace(".", "").replace("-", "").equals(controladorVisao.getCliente().getCpf())) {
-            if (cpfValido()) {
+        if (cpfValido()) {
+            if (!cpf.replace(".", "").replace("-", "").equals(controladorVisao.getCliente().getCpf())) {
                 try {
                     if (controladorVisao.getControleDominio().cpfConsulta(cpf) >= 1) {
                         JOptionPane.showMessageDialog(this, "O CPF informado já consta no sistema.", "ERRO", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
                     }
-                } catch (ParseException | SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage());
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Informe um CPF válido.", "ERRO!", JOptionPane.ERROR_MESSAGE);
+
+                try {
+                    controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                } catch (ParseException | SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Informe um CPF válido.", "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
 
 

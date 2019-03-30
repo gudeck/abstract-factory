@@ -58,8 +58,8 @@ public class DAOCliente {
 
     public void update(Cliente cliente) throws SQLException, SQLException {
 
-        System.out.println("chegou aqui1");
-        sql = "update cliente set nome = ?, "
+        sql = "update cliente set "
+                + "nome = ?, "
                 + "cpf = ?, "
                 + "dataNascimento = ?, "
                 + "sexo = ?, "
@@ -69,7 +69,6 @@ public class DAOCliente {
                 + "where codCliente = " + cliente.getCodCliente();
         statement = conexao.prepareStatement(sql);
 
-        System.out.println("chegou aqui2");
         java.sql.Date sqlDate = new java.sql.Date(cliente.getDataNascimento().getTime());
         int coluna = 1;
         statement.setString(coluna++, cliente.getNome());
@@ -80,9 +79,7 @@ public class DAOCliente {
         statement.setString(coluna++, cliente.getTelefone());
         statement.setString(coluna++, cliente.getEmail());
 
-        System.out.println("chegou aqui3");
-        statement.executeUpdate(sql);
-        System.out.println("chegou aqui4");
+        statement.executeUpdate();
     }
 
     public void delete(int codigo) throws SQLException {
