@@ -6,12 +6,10 @@
 package vision;
 
 import control.ControleVisao;
+import control.MetodosUteis;
 import domain.Cliente;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -284,7 +282,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, "O CPF informado já consta no sistema.", "ERRO", JOptionPane.ERROR_MESSAGE);
                 } else {
                     controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
-                    JOptionPane.showMessageDialog(this, "Registro inserido com sucesso!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Registro inserido com sucesso!", "Create", JOptionPane.INFORMATION_MESSAGE);
 
                     limparTela();
                 }
@@ -302,8 +300,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             btnLimpar.setEnabled(true);
             txtNome.setText(cliente.getNome());
             ftxtCpf.setText(cliente.getCpf());
-            SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-            ftxtDataNascimento.setText(formatPattern.format(cliente.getDataNascimento()));
+            ftxtDataNascimento.setText(MetodosUteis.javaDateTOstring(cliente.getDataNascimento()));
             ftxtTelefone.setText(cliente.getTelefone());
             txtEmail.setText(cliente.getEmail());
             txtEndereco.setText(cliente.getEndereco());
@@ -404,6 +401,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
                 try {
                     controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                    JOptionPane.showMessageDialog(this, "Registro alterado com sucesso!", "Update", JOptionPane.INFORMATION_MESSAGE);
                 } catch (ParseException | SQLException ex) {
                     JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                 }
@@ -411,7 +409,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(this, "Informe um CPF válido.", "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
-
 
     }//GEN-LAST:event_btnAlterarActionPerformed
 
