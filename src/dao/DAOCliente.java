@@ -5,6 +5,7 @@
  */
 package dao;
 
+import control.MetodosUteis;
 import domain.Cliente;
 import java.sql.Connection;
 import java.sql.Date;
@@ -17,22 +18,32 @@ import java.sql.SQLException;
  * @author gudeck
  */
 public class DAOCliente {
-
+    
+    private static DAOCliente uniqueInstance;
+    
     private final Connection conexao;
     private PreparedStatement statement;
     private String sql;
-
-    public DAOCliente(Connection con) {
+    
+    private DAOCliente(Connection con) {
         conexao = con;
     }
-
+    
+    public static synchronized DAOCliente getInstance(Connection con) {
+        if (uniqueInstance == null) {
+            uniqueInstance = new DAOCliente(con);
+        }
+        
+        return uniqueInstance;
+    }
+    
     public void create(String nome, String endereco, String email, String cpf, Date dataNascimento, String telefone, char sexo) throws SQLException {
 
 //                sql = "call create_cliente (?,?,?,?,?,?,?)";
         if (cpfConsulta(cpf) == 1) {
-            throw new SQLException("CPF j√° cadastrado!");
+            throw new SQLException("CPF j· cadastrado!");
         } else {
-
+            
             sql = "insert into cliente (nome, cpf, dataNascimento, sexo, endereco, telefone, email) values(?,?,?,?,?,?,?)";
             statement = conexao.prepareStatement(sql);
             statement.setString(1, nome);
@@ -44,20 +55,20 @@ public class DAOCliente {
             statement.setString(7, email);
             statement.executeUpdate();
         }
-
+        
     }
-
+    
     public ResultSet read(String nome) throws SQLException {
-
+        
         ResultSet result;
         sql = "select * from cliente where nome like '" + nome + "%'";
         statement = conexao.prepareStatement(sql);
         result = statement.executeQuery();
         return result;
     }
-
+    
     public void update(Cliente cliente) throws SQLException, SQLException {
-
+        
         sql = "update cliente set "
                 + "nome = ?, "
                 + "cpf = ?, "
@@ -68,65 +79,63 @@ public class DAOCliente {
                 + "email = ? "
                 + "where codCliente = " + cliente.getCodCliente();
         statement = conexao.prepareStatement(sql);
-
-        java.sql.Date sqlDate = new java.sql.Date(cliente.getDataNascimento().getTime());
+        
         int coluna = 1;
         statement.setString(coluna++, cliente.getNome());
         statement.setString(coluna++, cliente.getCpf());
-        statement.setDate(coluna++, sqlDate);
+        statement.setDate(coluna++, MetodosUteis.javaDateTOsqlDate(cliente.getDataNascimento()));
         statement.setString(coluna++, String.valueOf(cliente.getSexo()));
         statement.setString(coluna++, cliente.getEndereco());
         statement.setString(coluna++, cliente.getTelefone());
         statement.setString(coluna++, cliente.getEmail());
-
+        
         statement.executeUpdate();
     }
-
+    
     public void delete(int codigo) throws SQLException {
-
+        
         sql = "delete from cliente where codCliente = " + codigo;
         System.out.println(codigo);
         statement = conexao.prepareStatement(sql);
         statement.executeUpdate();
-
+        
     }
-
+    
     public ResultSet consulta(String nome, String endereco, String anoNascimento) throws SQLException {
-
+        
         ResultSet result;
-
+        
         sql = "select * from cliente where 1=1";
         statement = conexao.prepareStatement(sql);
         if (!nome.isEmpty()) {
             sql = sql + " and nome like '" + nome + "%'";
         }
-
+        
         if (!endereco.isEmpty()) {
             sql = sql + " and endereco like '" + endereco + "%'";
         }
-
+        
         if (!anoNascimento.equals("    ")) {
             sql = sql + " and year(dataNascimento) = " + anoNascimento;
         }
-
+        
         result = statement.executeQuery(sql);
-
+        
         return result;
     }
-
+    
     public int cpfConsulta(String cpf) throws SQLException {
-
+        
         ResultSet result;
         sql = "select count(*) from cliente where cpf like '" + cpf + "'";
         statement = conexao.prepareStatement(sql);
         result = statement.executeQuery(sql);
         if (result.next()) {
             return result.getInt(1);
-        }
-        else{
+        } else {
             return -1;
         }
-
+        
     }
-
+    
 }
