@@ -193,7 +193,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
         if (tblNome.getSelectedRow() > -1) {
             try {
                 controladorVisao.getControleDominio().clienteDelete(((Cliente) resultadoBusca.get(tblNome.getSelectedRow())));
-                JOptionPane.showMessageDialog(this, "Registro excluído com sucesso!", "", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Registro excluído com sucesso!", "Delete", JOptionPane.INFORMATION_MESSAGE);
                 tabela.removeRow(tblNome.getSelectedRow());
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Não foi possível excluir o registro: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
