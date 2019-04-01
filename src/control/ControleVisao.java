@@ -28,17 +28,12 @@ public class ControleVisao {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFRPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFRPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFRPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(JFRPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        //</editor-fold>
         ControleVisao visaoCtrl = new ControleVisao();
         visaoCtrl.janelaPrincipal();
 
@@ -49,43 +44,47 @@ public class ControleVisao {
     private Cliente objetoCliente;
 
     public ControleVisao() {
-        dominioCtlr = new ControleDominio();
+        dominioCtlr = ControleDominio.getInstance();
         objetoCliente = new Cliente();
     }
 
     public ControleDominio getControleDominio() {
         return dominioCtlr;
     }
-    
-    public Cliente getCliente(){
+
+    public Cliente getCliente() {
         return objetoCliente;
     }
-    
-    public void setCliente(Cliente cliente){
+
+    public void setCliente(Cliente cliente) {
         this.objetoCliente = cliente;
     }
 
     public void janelaPrincipal() {
         janelaPrincipal = new JFRPrincipal(this);
         janelaPrincipal.setLocationRelativeTo(null);
+        janelaPrincipal.setResizable(false);
         janelaPrincipal.setVisible(true);
     }
 
     public void cadastroCliente() {
         JDGCadastroCliente cadastroCliente = new JDGCadastroCliente(janelaPrincipal, true, this);
         cadastroCliente.setLocationRelativeTo(null);
+        cadastroCliente.setResizable(false);
         cadastroCliente.setVisible(true);
     }
 
     public void buscaCliente() {
         JDGBuscaCliente buscaCliente = new JDGBuscaCliente(janelaPrincipal, true, this);
         buscaCliente.setLocationRelativeTo(null);
+        buscaCliente.setResizable(false);
         buscaCliente.setVisible(true);
     }
 
     public void consultaCliente() {
         JDGConsultaCliente consultaCliente = new JDGConsultaCliente(janelaPrincipal, true, this);
         consultaCliente.setLocationRelativeTo(null);
+        consultaCliente.setResizable(false);
         consultaCliente.setVisible(true);
     }
 

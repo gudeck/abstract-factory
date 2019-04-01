@@ -13,11 +13,8 @@ import control.ControleVisao;
  */
 public class JFRPrincipal extends javax.swing.JFrame {
 
-    private ControleVisao controladorVisao;
+    private final ControleVisao controladorVisao;
 
-    /**
-     * Creates new form JFRPrincipal
-     */
     public JFRPrincipal(ControleVisao controlador) {
         initComponents();
         controladorVisao = controlador;

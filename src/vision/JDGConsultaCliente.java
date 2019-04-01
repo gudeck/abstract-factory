@@ -18,11 +18,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JDGConsultaCliente extends javax.swing.JDialog {
 
-    private ControleVisao controladorVisao;
+    private final ControleVisao controladorVisao;
 
-    /**
-     * Creates new form JDGConsultaCliente
-     */
     public JDGConsultaCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         super(parent, modal);
         initComponents();
@@ -141,8 +138,8 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        String nome = "", endereco = "", anoNascimento = "";
-        ArrayList resultadoPesquisa = new ArrayList();
+        String nome, endereco, anoNascimento;
+        ArrayList resultadoPesquisa;
         DefaultTableModel tabela = (DefaultTableModel) tblPesquisar.getModel();
 
         nome = txtNome.getText();
@@ -150,7 +147,7 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
         anoNascimento = ftxtAnoNascimento.getText();
 
         if (nome.isEmpty() && endereco.isEmpty() && anoNascimento.equals("    ")) {
-            JOptionPane.showMessageDialog(this, "Preencha ao menos um dos campos.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Preencha ao menos um dos campos.", "ERRO", JOptionPane.ERROR_MESSAGE);
         } else {
 
             try {

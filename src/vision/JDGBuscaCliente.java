@@ -18,12 +18,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JDGBuscaCliente extends javax.swing.JDialog {
 
-    private ControleVisao controladorVisao;
+    private final ControleVisao controladorVisao;
     ArrayList resultadoBusca;
 
-    /**
-     * Creates new form JDGBuscaCliente
-     */
     public JDGBuscaCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         super(parent, modal);
         initComponents();
@@ -47,6 +44,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblNome = new javax.swing.JTable();
+        btnExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Buscar Cliente");
@@ -99,24 +97,33 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
             tblNome.getColumnModel().getColumn(0).setMaxWidth(200);
         }
 
+        btnExcluir.setText("Excluir");
+        btnExcluir.setPreferredSize(new java.awt.Dimension(80, 23));
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(btnSelecionar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(txtNome)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnBuscar))))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtNome)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -133,7 +140,8 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
-                    .addComponent(btnSelecionar))
+                    .addComponent(btnSelecionar)
+                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -141,6 +149,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        controladorVisao.setCliente(null);
 
         String nome = txtNome.getText();
         resultadoBusca = new ArrayList();
@@ -148,6 +157,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
         if (nome.isEmpty()) {
             JOptionPane.showMessageDialog(this, "O nome não pode estar vazio!", "ERRO", JOptionPane.ERROR_MESSAGE);
+            txtNome.requestFocus();
         } else {
             try {
                 tabela.setRowCount(0);
@@ -168,14 +178,36 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
         if (tblNome.getSelectedRow() > -1) {
-             //controladorVisao.setCliente((Cliente)resultadoBusca.get(tblNome.getSelectedRow()));
-             this.dispose();
+            controladorVisao.setCliente((Cliente) resultadoBusca.get(tblNome.getSelectedRow()));
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione ao menos um registro da tabela!", "ERRO", JOptionPane.ERROR_MESSAGE);
+            txtNome.requestFocus();
         }
     }//GEN-LAST:event_btnSelecionarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        controladorVisao.setCliente(null);
+        DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
+
+        if (tblNome.getSelectedRow() > -1) {
+            try {
+                controladorVisao.getControleDominio().clienteDelete(((Cliente) resultadoBusca.get(tblNome.getSelectedRow())));
+                JOptionPane.showMessageDialog(this, "Registro excluído com sucesso!", "Delete", JOptionPane.INFORMATION_MESSAGE);
+                tabela.removeRow(tblNome.getSelectedRow());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Não foi possível excluir o registro: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione ao menos um registro da tabela!", "ERRO", JOptionPane.ERROR_MESSAGE);
+            txtNome.requestFocus();
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnSelecionar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
