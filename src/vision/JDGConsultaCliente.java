@@ -147,7 +147,7 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
         anoNascimento = ftxtAnoNascimento.getText();
 
         if (nome.isEmpty() && endereco.isEmpty() && anoNascimento.equals("    ")) {
-            JOptionPane.showMessageDialog(this, "Preencha ao menos um dos campos.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Preencha ao menos um dos campos.", "ERRO", JOptionPane.ERROR_MESSAGE);
         } else {
 
             try {

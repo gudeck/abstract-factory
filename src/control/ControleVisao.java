@@ -44,7 +44,7 @@ public class ControleVisao {
     private Cliente objetoCliente;
 
     public ControleVisao() {
-        dominioCtlr = new ControleDominio();
+        dominioCtlr = ControleDominio.getInstance();
         objetoCliente = new Cliente();
     }
 
