@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,14 +20,20 @@ import java.util.Date;
  */
 public class ControleDominio {
 
+    private static ControleDominio uniqueInstance = new ControleDominio();
+
     private final Connection conexao;
     private final DAOCliente clienteDao;
     ArrayList<Cliente> listaClientes = new ArrayList();
 
-    public ControleDominio() {
+    private ControleDominio() {
         conexao = Database.getConnection();
-        clienteDao = new DAOCliente(conexao);
+        clienteDao = DAOCliente.getInstance(conexao);
 
+    }
+
+    public static ControleDominio getInstance() {
+        return uniqueInstance;
     }
 
     public void clienteCreate(String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
@@ -36,9 +41,7 @@ public class ControleDominio {
         cpf = cpf.replace(".", "").replace("-", "");
         telefone = telefone.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
 
-        SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date javaDate = formatPattern.parse(dataNascimento);
-        java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
+        java.sql.Date sqlDate = MetodosUteis.stringTOsqlDate(dataNascimento);
 
         clienteDao.create(nome, endereco, email, cpf, sqlDate, telefone, sexo);
     }
@@ -69,16 +72,13 @@ public class ControleDominio {
 
     public void clienteUpdate(int codigo, String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
 
-        
         cpf = cpf.replace(".", "").replace("-", "");
         telefone = telefone.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
 
-        SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date javaDate = formatPattern.parse(dataNascimento);
-        
+        java.util.Date javaDate = MetodosUteis.stringTOjavaDate(dataNascimento);
+
         Cliente cliente = new Cliente(codigo, nome, cpf, javaDate, sexo, endereco, telefone, email);
-        
-        
+
         clienteDao.update(cliente);
 
     }
@@ -112,10 +112,10 @@ public class ControleDominio {
 
     }
 
-    public int cpfConsulta(String cpf) throws SQLException{
+    public int cpfConsulta(String cpf) throws SQLException {
         cpf = cpf.replace(".", "").replace("-", "");
-        
+
         return clienteDao.cpfConsulta(cpf);
     }
-    
+
 }
