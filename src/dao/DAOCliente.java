@@ -41,7 +41,7 @@ public class DAOCliente {
 
 //                sql = "call create_cliente (?,?,?,?,?,?,?)";
         if (cpfConsulta(cpf) == 1) {
-            throw new SQLException("CPF já cadastrado!");
+            throw new SQLException("CPF j� cadastrado!");
         } else {
             
             sql = "insert into cliente (nome, cpf, dataNascimento, sexo, endereco, telefone, email) values(?,?,?,?,?,?,?)";
