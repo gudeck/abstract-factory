@@ -18,14 +18,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JDGBuscaCliente extends javax.swing.JDialog {
 
+    private static JDGBuscaCliente uniqueInstance;
+    
     private final ControleVisao controladorVisao;
     ArrayList resultadoBusca;
 
-    public JDGBuscaCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+    private JDGBuscaCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         super(parent, modal);
         initComponents();
 
         controladorVisao = controlador;
+    }
+    
+    public static synchronized JDGBuscaCliente getInstance(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+        if (uniqueInstance == null) {
+            uniqueInstance = new JDGBuscaCliente(parent, modal, controlador);
+        }
+
+        return uniqueInstance;
     }
 
     /**
@@ -48,6 +58,11 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Buscar Cliente");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Nome");
 
@@ -150,6 +165,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         controladorVisao.setCliente(null);
+        
 
         String nome = txtNome.getText();
         resultadoBusca = new ArrayList();
@@ -169,6 +185,9 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Não foi possível completar a busca: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         }
+        
+        txtNome.setText("");
+        txtNome.requestFocus();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -203,6 +222,11 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
             txtNome.requestFocus();
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
+        tabela.setRowCount(0);
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

@@ -18,13 +18,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JDGConsultaCliente extends javax.swing.JDialog {
 
+    private static JDGConsultaCliente uniqueInstance;
+
     private final ControleVisao controladorVisao;
 
-    public JDGConsultaCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+    private JDGConsultaCliente (java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+
         super(parent, modal);
         initComponents();
 
         controladorVisao = controlador;
+    }
+
+    public static synchronized JDGConsultaCliente getInstance(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+        if (uniqueInstance == null) {
+            uniqueInstance = new JDGConsultaCliente(parent, modal, controlador);
+        }
+
+        return uniqueInstance;
     }
 
     /**
@@ -47,6 +58,11 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
         btnPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Nome");
 
@@ -172,6 +188,13 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    
+    //Evento que limpa a tela ao fechar. Para não ficar dados de pesquisas anteriores ao abrir a tela. O padrão singleton segue sendo seguido.
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        DefaultTableModel tabela = (DefaultTableModel) tblPesquisar.getModel();
+        tabela.setRowCount(0);
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPesquisar;

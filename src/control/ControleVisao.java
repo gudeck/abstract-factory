@@ -14,6 +14,13 @@ import vision.*;
  */
 public class ControleVisao {
 
+    //Classes com singleton:
+    //ControleDominio
+    //DAOCliente
+    //JDGBuscaCliente
+    //JDGCadastroCliente
+    //JDGConsultaCLiente
+    
     public static void main(String args[]) {
 
         /* Set the Nimbus look and feel */
@@ -68,21 +75,21 @@ public class ControleVisao {
     }
 
     public void cadastroCliente() {
-        JDGCadastroCliente cadastroCliente = new JDGCadastroCliente(janelaPrincipal, true, this);
+        JDGCadastroCliente cadastroCliente = JDGCadastroCliente.getInstance(janelaPrincipal, true, this);
         cadastroCliente.setLocationRelativeTo(null);
         cadastroCliente.setResizable(false);
         cadastroCliente.setVisible(true);
     }
 
     public void buscaCliente() {
-        JDGBuscaCliente buscaCliente = new JDGBuscaCliente(janelaPrincipal, true, this);
+        JDGBuscaCliente buscaCliente = JDGBuscaCliente.getInstance(janelaPrincipal, true, this);
         buscaCliente.setLocationRelativeTo(null);
         buscaCliente.setResizable(false);
         buscaCliente.setVisible(true);
     }
 
     public void consultaCliente() {
-        JDGConsultaCliente consultaCliente = new JDGConsultaCliente(janelaPrincipal, true, this);
+        JDGConsultaCliente consultaCliente = JDGConsultaCliente.getInstance(janelaPrincipal, true, this);
         consultaCliente.setLocationRelativeTo(null);
         consultaCliente.setResizable(false);
         consultaCliente.setVisible(true);

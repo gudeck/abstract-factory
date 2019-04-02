@@ -18,12 +18,22 @@ import javax.swing.JOptionPane;
  */
 public class JDGCadastroCliente extends javax.swing.JDialog {
 
+    private static JDGCadastroCliente uniqueInstance;
+    
     private final ControleVisao controladorVisao;
 
-    public JDGCadastroCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+    private JDGCadastroCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         super(parent, modal);
         initComponents();
         controladorVisao = controlador;
+    }
+    
+    public static synchronized JDGCadastroCliente getInstance(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+        if (uniqueInstance == null) {
+            uniqueInstance = new JDGCadastroCliente(parent, modal, controlador);
+        }
+
+        return uniqueInstance;
     }
 
     /**
@@ -60,6 +70,11 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cliente");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel4.setText("Endereço");
 
@@ -415,6 +430,11 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+
+        limparTela();
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
