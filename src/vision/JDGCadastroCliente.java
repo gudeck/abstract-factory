@@ -10,8 +10,6 @@ import control.MetodosUteis;
 import domain.Cliente;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,11 +21,13 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     private static JDGCadastroCliente uniqueInstance;
 
     private final ControleVisao controladorVisao;
+    private Cliente objetoCliente;
 
     private JDGCadastroCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         super(parent, modal);
         initComponents();
         controladorVisao = controlador;
+        objetoCliente = null;
     }
 
     public static synchronized JDGCadastroCliente getInstance(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
@@ -270,10 +270,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
 
-        controladorVisao.setCliente(null);
-
-        boolean campoVazio = false;
-
         String nome = txtNome.getText();
         String endereco = txtEndereco.getText();
         String email = txtEmail.getText();
@@ -287,19 +283,13 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         }
 
         if (nome.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || sexo == '\0' || dataNascimento.equals("  /  /    ") || telefone.equals("(  )       -    ")) {
-            campoVazio = true;
-        }
-
-        if (!email.isEmpty()) {
-            if (!email.contains("@") || !email.contains(".")) {
-                JOptionPane.showMessageDialog(this, "Insira um email válido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        if (campoVazio) {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos.", "ERRO!", JOptionPane.ERROR_MESSAGE);
         } else if (!cpfValido()) {
             JOptionPane.showMessageDialog(this, "Informe um CPF válido.", "ERRO!", JOptionPane.ERROR_MESSAGE);
+        } else if (!email.isEmpty()) {
+            if (!email.contains("@") || !email.contains(".")) {
+                JOptionPane.showMessageDialog(this, "Insira um email válido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
             try {
                 if (controladorVisao.getControleDominio().cpfConsulta(cpf) >= 1) {
@@ -405,44 +395,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
 
-        String nome = txtNome.getText();
-        String cpf = ftxtCpf.getText();
-        String dataNascimento = ftxtDataNascimento.getText();
-        char sexo = '\0';
-        String endereco = txtEndereco.getText();
-        String telefone = ftxtTelefone.getText();
-        String email = txtEmail.getText();
-        if (rdbFeminino.isSelected() || rdbMasculino.isSelected()) {
-            sexo = (char) grpSexo.getSelection().getMnemonic();
-        }
-
-        if (!email.isEmpty()) {
-            if (!email.contains("@") || !email.contains(".")) {
-                JOptionPane.showMessageDialog(this, "Insira um email válido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        if (cpfValido()) {
-            if (!cpf.replace(".", "").replace("-", "").equals(controladorVisao.getCliente().getCpf())) {
-                try {
-                    if (controladorVisao.getControleDominio().cpfConsulta(cpf) >= 1) {
-                        JOptionPane.showMessageDialog(this, "O CPF informado já consta no sistema.", "ERRO", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-
-                try {
-                    controladorVisao.getControleDominio().clienteUpdate(controladorVisao.getCliente().getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
-                    JOptionPane.showMessageDialog(this, "Registro alterado com sucesso!", "Update", JOptionPane.INFORMATION_MESSAGE);
-                } catch (ParseException | SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Informe um CPF válido.", "ERRO!", JOptionPane.ERROR_MESSAGE);
-        }
 
     }//GEN-LAST:event_btnAlterarActionPerformed
 

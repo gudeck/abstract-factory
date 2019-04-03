@@ -19,7 +19,8 @@ import javax.swing.table.DefaultTableModel;
 public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private static JDGBuscaCliente uniqueInstance;
-
+    
+    private Cliente objetoCliente;
     private final ControleVisao controladorVisao;
     ArrayList resultadoBusca;
 
@@ -165,7 +166,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        controladorVisao.setCliente(null);
+        
 
         String nome = txtNome.getText();
         resultadoBusca = new ArrayList();
@@ -192,12 +193,13 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        objetoCliente = null;
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
         if (tblNome.getSelectedRow() > -1) {
-            controladorVisao.setCliente((Cliente) resultadoBusca.get(tblNome.getSelectedRow()));
+            objetoCliente = (Cliente) resultadoBusca.get(tblNome.getSelectedRow());
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Selecione ao menos um registro da tabela!", "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -206,14 +208,14 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        controladorVisao.setCliente(null);
+        
         DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
 
         if (tblNome.getSelectedRow() > -1) {
             try {
                 controladorVisao.getControleDominio().clienteDelete(((Cliente) resultadoBusca.get(tblNome.getSelectedRow())));
-                JOptionPane.showMessageDialog(this, "Registro excluído com sucesso!", "Delete", JOptionPane.INFORMATION_MESSAGE);
                 tabela.removeRow(tblNome.getSelectedRow());
+                JOptionPane.showMessageDialog(this, "Registro excluído com sucesso!", "Delete", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Não foi possível excluir o registro: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
@@ -221,6 +223,8 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Selecione ao menos um registro da tabela!", "ERRO", JOptionPane.ERROR_MESSAGE);
             txtNome.requestFocus();
         }
+        
+        
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -238,4 +242,12 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     private javax.swing.JTable tblNome;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
+
+    public Cliente getObjetoCliente() {
+        return objetoCliente;
+    }
+
+    public void setObjetoCliente(Cliente objetoCliente) {
+        this.objetoCliente = objetoCliente;
+    }
 }

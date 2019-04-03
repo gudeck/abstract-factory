@@ -47,23 +47,13 @@ public class ControleVisao {
 
     private ControleDominio dominioCtlr;
     private JFRPrincipal janelaPrincipal;
-    private Cliente objetoCliente;
 
     public ControleVisao() {
         dominioCtlr = ControleDominio.getInstance();
-        objetoCliente = new Cliente();
     }
 
     public ControleDominio getControleDominio() {
         return dominioCtlr;
-    }
-
-    public Cliente getCliente() {
-        return objetoCliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.objetoCliente = cliente;
     }
 
     public void janelaPrincipal() {
@@ -80,7 +70,7 @@ public class ControleVisao {
         cadastroCliente.setVisible(true);
     }
 
-    public void buscaCliente() {
+    public Cliente buscaCliente() {
         JDGBuscaCliente buscaCliente = JDGBuscaCliente.getInstance(janelaPrincipal, true, this);
         buscaCliente.setLocationRelativeTo(null);
         buscaCliente.setResizable(false);
