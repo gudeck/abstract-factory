@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private static JDGBuscaCliente uniqueInstance;
-    
+
     private final ControleVisao controladorVisao;
     ArrayList resultadoBusca;
 
@@ -29,12 +29,13 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
         controladorVisao = controlador;
     }
-    
+
     public static synchronized JDGBuscaCliente getInstance(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         if (uniqueInstance == null) {
             uniqueInstance = new JDGBuscaCliente(parent, modal, controlador);
         }
 
+        uniqueInstance.setModal(modal);
         return uniqueInstance;
     }
 
@@ -165,7 +166,6 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         controladorVisao.setCliente(null);
-        
 
         String nome = txtNome.getText();
         resultadoBusca = new ArrayList();
@@ -185,7 +185,7 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Não foi possível completar a busca: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
+
         txtNome.setText("");
         txtNome.requestFocus();
 

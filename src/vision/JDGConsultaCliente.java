@@ -22,7 +22,7 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
 
     private final ControleVisao controladorVisao;
 
-    private JDGConsultaCliente (java.awt.Frame parent, boolean modal, ControleVisao controlador) {
+    private JDGConsultaCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
 
         super(parent, modal);
         initComponents();
@@ -35,6 +35,7 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
             uniqueInstance = new JDGConsultaCliente(parent, modal, controlador);
         }
 
+        uniqueInstance.setModal(modal);
         return uniqueInstance;
     }
 
@@ -189,7 +190,6 @@ public class JDGConsultaCliente extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    
     //Evento que limpa a tela ao fechar. Para não ficar dados de pesquisas anteriores ao abrir a tela. O padrão singleton segue sendo seguido.
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         DefaultTableModel tabela = (DefaultTableModel) tblPesquisar.getModel();

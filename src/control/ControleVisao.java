@@ -20,7 +20,6 @@ public class ControleVisao {
     //JDGBuscaCliente
     //JDGCadastroCliente
     //JDGConsultaCLiente
-    
     public static void main(String args[]) {
 
         /* Set the Nimbus look and feel */

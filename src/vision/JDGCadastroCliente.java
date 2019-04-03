@@ -10,6 +10,8 @@ import control.MetodosUteis;
 import domain.Cliente;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,7 +21,7 @@ import javax.swing.JOptionPane;
 public class JDGCadastroCliente extends javax.swing.JDialog {
 
     private static JDGCadastroCliente uniqueInstance;
-    
+
     private final ControleVisao controladorVisao;
 
     private JDGCadastroCliente(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
@@ -27,12 +29,13 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         initComponents();
         controladorVisao = controlador;
     }
-    
+
     public static synchronized JDGCadastroCliente getInstance(java.awt.Frame parent, boolean modal, ControleVisao controlador) {
         if (uniqueInstance == null) {
             uniqueInstance = new JDGCadastroCliente(parent, modal, controlador);
         }
 
+        uniqueInstance.setModal(modal);
         return uniqueInstance;
     }
 
@@ -287,6 +290,12 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             campoVazio = true;
         }
 
+        if (!email.isEmpty()) {
+            if (!email.contains("@") || !email.contains(".")) {
+                JOptionPane.showMessageDialog(this, "Insira um email válido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
         if (campoVazio) {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos.", "ERRO!", JOptionPane.ERROR_MESSAGE);
         } else if (!cpfValido()) {
@@ -296,13 +305,16 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                 if (controladorVisao.getControleDominio().cpfConsulta(cpf) >= 1) {
                     JOptionPane.showMessageDialog(this, "O CPF informado já consta no sistema.", "ERRO", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
-                    JOptionPane.showMessageDialog(this, "Registro inserido com sucesso!", "Create", JOptionPane.INFORMATION_MESSAGE);
+                    try {
+                        controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                        JOptionPane.showMessageDialog(this, "Registro inserido com sucesso!", "Create", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (ParseException | SQLException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                    }
 
                     limparTela();
                 }
-
-            } catch (ParseException | SQLException ex) {
+            } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -403,6 +415,13 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         if (rdbFeminino.isSelected() || rdbMasculino.isSelected()) {
             sexo = (char) grpSexo.getSelection().getMnemonic();
         }
+
+        if (!email.isEmpty()) {
+            if (!email.contains("@") || !email.contains(".")) {
+                JOptionPane.showMessageDialog(this, "Insira um email válido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
         if (cpfValido()) {
             if (!cpf.replace(".", "").replace("-", "").equals(controladorVisao.getCliente().getCpf())) {
                 try {
@@ -432,7 +451,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-
         limparTela();
     }//GEN-LAST:event_formWindowClosing
 

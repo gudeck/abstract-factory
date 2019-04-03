@@ -7,7 +7,6 @@ package control;
 
 import dao.*;
 import domain.*;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -22,13 +21,9 @@ public class ControleDominio {
 
     private static ControleDominio uniqueInstance = new ControleDominio();
 
-    private final Connection conexao;
-    private final DAOCliente clienteDao;
     ArrayList<Cliente> listaClientes = new ArrayList();
 
     private ControleDominio() {
-        conexao = Database.getConnection();
-        clienteDao = DAOCliente.getInstance(conexao);
 
     }
 
@@ -43,11 +38,11 @@ public class ControleDominio {
 
         java.sql.Date sqlDate = MetodosUteis.stringTOsqlDate(dataNascimento);
 
-        clienteDao.create(nome, endereco, email, cpf, sqlDate, telefone, sexo);
+        DAOCliente.getInstance().create(nome, endereco, email, cpf, sqlDate, telefone, sexo);
     }
 
     public ArrayList clienteRead(String nome) throws SQLException {
-        ResultSet resultadoPesquisa = clienteDao.read(nome);
+        ResultSet resultadoPesquisa = DAOCliente.getInstance().read(nome);
         Cliente cliente;
 
         listaClientes.clear();
@@ -79,19 +74,18 @@ public class ControleDominio {
 
         Cliente cliente = new Cliente(codigo, nome, cpf, javaDate, sexo, endereco, telefone, email);
 
-        clienteDao.update(cliente);
+        DAOCliente.getInstance().update(cliente);
 
     }
 
     public void clienteDelete(Cliente cliente) throws SQLException {
-        clienteDao.delete(cliente.getCodCliente());
+        DAOCliente.getInstance().delete(cliente.getCodCliente());
     }
 
     public ArrayList clienteConsulta(String nome, String endereco, String anoNascimento) throws SQLException {
 
-        ResultSet resultadoPesquisa = clienteDao.consulta(nome, endereco, anoNascimento);
+        ResultSet resultadoPesquisa = DAOCliente.getInstance().consulta(nome, endereco, anoNascimento);
         Cliente cliente;
-        String dia, mes, ano, data;
 
         listaClientes.clear();
         while (resultadoPesquisa.next()) {
@@ -115,7 +109,7 @@ public class ControleDominio {
     public int cpfConsulta(String cpf) throws SQLException {
         cpf = cpf.replace(".", "").replace("-", "");
 
-        return clienteDao.cpfConsulta(cpf);
+        return DAOCliente.getInstance().cpfConsulta(cpf);
     }
 
 }
