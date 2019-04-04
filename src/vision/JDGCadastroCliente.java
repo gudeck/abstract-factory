@@ -10,6 +10,9 @@ import control.MetodosUteis;
 import domain.Cliente;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -108,6 +111,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             ex.printStackTrace();
         }
 
+        btnCadastrar.setMnemonic('C');
         btnCadastrar.setText("Cadastrar");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,12 +148,13 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             }
         });
 
+        btnAlterar.setMnemonic('U');
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
         btnAlterar.setPreferredSize(new java.awt.Dimension(80, 23));
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
+                btnCadastrarActionPerformed(evt);
             }
         });
 
@@ -282,52 +287,71 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
             sexo = (char) grpSexo.getSelection().getMnemonic();
         }
 
-        if (nome.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || sexo == '\0' || dataNascimento.equals("  /  /    ") || telefone.equals("(  )       -    ")) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos.", "ERRO!", JOptionPane.ERROR_MESSAGE);
-        } else if (!cpfValido()) {
-            JOptionPane.showMessageDialog(this, "Informe um CPF válido.", "ERRO!", JOptionPane.ERROR_MESSAGE);
-        } else if (!email.isEmpty()) {
-            if (!email.contains("@") || !email.contains(".")) {
-                JOptionPane.showMessageDialog(this, "Insira um email válido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
-            }
+        if (nome.isEmpty() || endereco.isEmpty() || cpf.equals("   .   .   -  ") || dataNascimento.equals("  /  /    ") || telefone.equals("(  )      -    ") || sexo == '\0') {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.");
+        } else if (!email.isEmpty() && (!email.contains("@") || !email.contains("."))) {
+            JOptionPane.showMessageDialog(this, "Email inválido!", "ERRO", JOptionPane.ERROR_MESSAGE);
         } else {
-            try {
-                if (controladorVisao.getControleDominio().cpfConsulta(cpf) >= 1) {
-                    JOptionPane.showMessageDialog(this, "O CPF informado já consta no sistema.", "ERRO", JOptionPane.ERROR_MESSAGE);
+            ;
+            if (((JButton) evt.getSource()).getMnemonic() == 'C') {
+                if (!cpfValido()) {
+                    JOptionPane.showMessageDialog(this, "CPF inválido.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                } else if (controladorVisao.getControleDominio().cpfConsulta(cpf) >= 1) {
+                    JOptionPane.showMessageDialog(this, "CPF já consta no sistema.", "ERRO", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
                         controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
-                        JOptionPane.showMessageDialog(this, "Registro inserido com sucesso!", "Create", JOptionPane.INFORMATION_MESSAGE);
-                    } catch (ParseException | SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(this, "Erro de conversão de dados.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "Erro de banco de dados.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
                         JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                     }
-
-                    limparTela();
                 }
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                try {
+                    controladorVisao.getControleDominio().clienteUpdate(objetoCliente.getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                    objetoCliente = null;
+                    ftxtCpf.setEnabled(true);
+                    btnAlterar.setEnabled(false);
+                    JOptionPane.showMessageDialog(this, "Cliente alterado com sucesso!");
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro de conversão de dados.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro de banco de dados.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
+        
+        limparTela();
+        txtNome.requestFocus();
+
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        controladorVisao.buscaCliente();
-        Cliente cliente = controladorVisao.getCliente();
-        if (cliente != null) {
+        objetoCliente = controladorVisao.buscaCliente();
+
+        if (objetoCliente != null) {
             btnLimpar.setEnabled(true);
-            txtNome.setText(cliente.getNome());
-            ftxtCpf.setText(cliente.getCpf());
-            ftxtDataNascimento.setText(MetodosUteis.javaDateTOstring(cliente.getDataNascimento()));
-            ftxtTelefone.setText(cliente.getTelefone());
-            txtEmail.setText(cliente.getEmail());
-            txtEndereco.setText(cliente.getEndereco());
+            txtNome.setText(objetoCliente.getNome());
+            ftxtCpf.setText(objetoCliente.getCpf());
+            ftxtDataNascimento.setText(MetodosUteis.javaDateTOstring(objetoCliente.getDataNascimento()));
+            ftxtTelefone.setText(objetoCliente.getTelefone());
+            txtEmail.setText(objetoCliente.getEmail());
+            txtEndereco.setText(objetoCliente.getEndereco());
+
             grpSexo.clearSelection();
-            if (cliente.getSexo() == 'F') {
+            if (objetoCliente.getSexo() == 'F') {
                 rdbFeminino.setSelected(true);
             } else {
                 rdbMasculino.setSelected(true);
             }
 
+            ftxtCpf.setEnabled(false);
             btnAlterar.setEnabled(true);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -392,11 +416,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         limparTela();
     }//GEN-LAST:event_btnLimparActionPerformed
-
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-
-
-    }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();

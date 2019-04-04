@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +33,7 @@ public class ControleDominio {
         return uniqueInstance;
     }
 
-    public void clienteCreate(String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
+    public void clienteCreate(String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException, Exception{
 
         cpf = cpf.replace(".", "").replace("-", "");
         telefone = telefone.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
@@ -65,7 +67,7 @@ public class ControleDominio {
 
     }
 
-    public void clienteUpdate(int codigo, String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException {
+    public void clienteUpdate(int codigo, String nome, String endereco, String email, String cpf, String dataNascimento, String telefone, char sexo) throws ParseException, SQLException{
 
         cpf = cpf.replace(".", "").replace("-", "");
         telefone = telefone.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
@@ -106,10 +108,17 @@ public class ControleDominio {
 
     }
 
-    public int cpfConsulta(String cpf) throws SQLException {
+    public int cpfConsulta(String cpf){
+        int resultadoConsulta = -1;
         cpf = cpf.replace(".", "").replace("-", "");
 
-        return DAOCliente.getInstance().cpfConsulta(cpf);
+        try {
+            resultadoConsulta = DAOCliente.getInstance().cpfConsulta(cpf);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleDominio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultadoConsulta;
     }
 
 }

@@ -233,6 +233,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCadastrar">
           <Properties>
+            <Property name="mnemonic" type="int" value="67"/>
             <Property name="text" type="java.lang.String" value="Cadastrar"/>
           </Properties>
           <Events>
@@ -287,6 +288,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnAlterar">
           <Properties>
+            <Property name="mnemonic" type="int" value="85"/>
             <Property name="text" type="java.lang.String" value="Alterar"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -294,7 +296,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAlterarActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancelar">

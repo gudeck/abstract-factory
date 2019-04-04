@@ -37,11 +37,11 @@ public class DAOCliente {
         return uniqueInstance;
     }
 
-    public void create(String nome, String endereco, String email, String cpf, Date dataNascimento, String telefone, char sexo) throws SQLException {
+    public void create(String nome, String endereco, String email, String cpf, Date dataNascimento, String telefone, char sexo) throws SQLException, Exception{
 
 //                sql = "call create_cliente (?,?,?,?,?,?,?)";
         if (cpfConsulta(cpf) == 1) {
-            throw new SQLException("CPF ja cadastrado!");
+            throw new Exception("CPF ja cadastrado!");
         } else {
 
             sql = "insert into cliente (nome, cpf, dataNascimento, sexo, endereco, telefone, email) values(?,?,?,?,?,?,?)";
@@ -67,7 +67,7 @@ public class DAOCliente {
         return result;
     }
 
-    public void update(Cliente cliente) throws SQLException, SQLException {
+    public void update(Cliente cliente) throws SQLException{
 
         sql = "update cliente set "
                 + "nome = ?, "
@@ -95,7 +95,6 @@ public class DAOCliente {
     public void delete(int codigo) throws SQLException {
 
         sql = "delete from cliente where codCliente = " + codigo;
-        System.out.println(codigo);
         statement = conexao.prepareStatement(sql);
         statement.executeUpdate();
 
@@ -124,7 +123,7 @@ public class DAOCliente {
         return result;
     }
 
-    public int cpfConsulta(String cpf) throws SQLException {
+    public int cpfConsulta(String cpf) throws SQLException{
 
         ResultSet result;
         sql = "select count(*) from cliente where cpf like '" + cpf + "'";

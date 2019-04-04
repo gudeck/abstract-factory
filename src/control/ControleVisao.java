@@ -75,6 +75,8 @@ public class ControleVisao {
         buscaCliente.setLocationRelativeTo(null);
         buscaCliente.setResizable(false);
         buscaCliente.setVisible(true);
+        
+        return buscaCliente.getObjetoCliente();
     }
 
     public void consultaCliente() {
