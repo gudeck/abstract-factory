@@ -29,7 +29,7 @@ public class JFRPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuiCadastroCliente = new javax.swing.JMenuItem();
@@ -41,9 +41,10 @@ public class JFRPrincipal extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().setLayout(null);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("G:\\Sem título.png")); // NOI18N
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, -17, 562, 310);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vision/imagens/Sem título.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(0, 0, 570, 280);
 
         jMenu1.setText("Cadastro");
 
@@ -86,7 +87,7 @@ public class JFRPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuiConsultaCLienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
