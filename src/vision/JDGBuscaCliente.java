@@ -199,7 +199,9 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
         if (tblNome.getSelectedRow() > -1) {
+            DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
             objetoCliente = (Cliente) resultadoBusca.get(tblNome.getSelectedRow());
+            tabela.setRowCount(0);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Selecione ao menos um registro da tabela!", "ERRO", JOptionPane.ERROR_MESSAGE);
