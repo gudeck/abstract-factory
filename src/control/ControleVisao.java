@@ -20,6 +20,7 @@ public class ControleVisao {
     //JDGBuscaCliente
     //JDGCadastroCliente
     //JDGConsultaCLiente
+    
     public static void main(String args[]) {
 
         /* Set the Nimbus look and feel */
@@ -60,6 +61,7 @@ public class ControleVisao {
         janelaPrincipal = new JFRPrincipal(this);
         janelaPrincipal.setLocationRelativeTo(null);
         janelaPrincipal.setResizable(false);
+        janelaPrincipal.setSize(565, 327);
         janelaPrincipal.setVisible(true);
     }
 
