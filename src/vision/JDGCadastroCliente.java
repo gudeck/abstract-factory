@@ -52,6 +52,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     private void initComponents() {
 
         grpSexo = new javax.swing.ButtonGroup();
+        txtCodigo = new javax.swing.JTextField();
         pnlPrincipal = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -74,6 +75,8 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         btnAlterar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
+
+        txtCodigo.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cliente");
@@ -281,7 +284,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-
+        
         String nome = txtNome.getText();
         String endereco = txtEndereco.getText();
         String email = txtEmail.getText();
@@ -308,7 +311,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                 } else {
                     try {
                         controladorVisao.getControleDominio().clienteCreate(nome, endereco, email, cpf, dataNascimento, telefone, sexo);
-                    JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
+                        JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
                     } catch (ParseException ex) {
                         JOptionPane.showMessageDialog(this, "Erro de conversão de dados.", "ERRO", JOptionPane.ERROR_MESSAGE);
                     } catch (SQLException ex) {
@@ -320,11 +323,12 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
             } else {
                 try {
-                    controladorVisao.getControleDominio().clienteUpdate(objetoCliente.getCodCliente(), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                    controladorVisao.getControleDominio().clienteUpdate(Integer.parseInt(txtCodigo.getText()), nome, endereco, email, cpf, dataNascimento, telefone, sexo);
+                    JOptionPane.showMessageDialog(this, "Cliente alterado com sucesso!");
                     objetoCliente = null;
                     ftxtCpf.setEnabled(true);
                     btnAlterar.setEnabled(false);
-                    JOptionPane.showMessageDialog(this, "Cliente alterado com sucesso!");
+                    btnCadastrar.setEnabled(true);
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(this, "Erro de conversão de dados.", "ERRO", JOptionPane.ERROR_MESSAGE);
                 } catch (SQLException ex) {
@@ -332,7 +336,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                 }
             }
         }
-        
+
         limparTela();
         txtNome.requestFocus();
 
@@ -344,6 +348,8 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
         if (objetoCliente != null) {
             btnLimpar.setEnabled(true);
+            btnCadastrar.setEnabled(false);
+            txtCodigo.setText(String.valueOf(objetoCliente.getCodCliente()));
             txtNome.setText(objetoCliente.getNome());
             ftxtCpf.setText(objetoCliente.getCpf());
             ftxtDataNascimento.setText(MetodosUteis.javaDateTOstring(objetoCliente.getDataNascimento()));
@@ -421,6 +427,9 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     }
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        ftxtCpf.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnCadastrar.setEnabled(true);
         limparTela();
     }//GEN-LAST:event_btnLimparActionPerformed
 
@@ -453,6 +462,7 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
     private javax.swing.JPanel pnlPrincipal;
     private javax.swing.JRadioButton rdbFeminino;
     private javax.swing.JRadioButton rdbMasculino;
+    private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtNome;

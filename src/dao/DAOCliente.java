@@ -26,7 +26,7 @@ public class DAOCliente {
     private String sql;
 
     private DAOCliente() {
-        conexao = Database.getConnection();
+        conexao = ConfiguracoesBD.criarConector();
     }
 
     public static synchronized DAOCliente getInstance() {
@@ -37,7 +37,7 @@ public class DAOCliente {
         return uniqueInstance;
     }
 
-    public void create(String nome, String endereco, String email, String cpf, Date dataNascimento, String telefone, char sexo) throws SQLException, Exception{
+    public void create(String nome, String endereco, String email, String cpf, Date dataNascimento, String telefone, char sexo) throws SQLException, Exception {
 
 //                sql = "call create_cliente (?,?,?,?,?,?,?)";
         if (cpfConsulta(cpf) == 1) {
@@ -67,7 +67,7 @@ public class DAOCliente {
         return result;
     }
 
-    public void update(Cliente cliente) throws SQLException{
+    public void update(Cliente cliente) throws SQLException {
 
         sql = "update cliente set "
                 + "nome = ?, "
@@ -123,7 +123,7 @@ public class DAOCliente {
         return result;
     }
 
-    public int cpfConsulta(String cpf) throws SQLException{
+    public int cpfConsulta(String cpf) throws SQLException {
 
         ResultSet result;
         sql = "select count(*) from cliente where cpf like '" + cpf + "'";

@@ -193,6 +193,8 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
+        tabela.setRowCount(0);
         objetoCliente = null;
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -205,6 +207,9 @@ public class JDGBuscaCliente extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Selecione ao menos um registro da tabela!", "ERRO", JOptionPane.ERROR_MESSAGE);
             txtNome.requestFocus();
         }
+        
+        DefaultTableModel tabela = (DefaultTableModel) tblNome.getModel();
+        tabela.setRowCount(0);
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed

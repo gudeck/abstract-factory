@@ -8,30 +8,42 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author gudeck
  */
-public class Database {
+public class ProdutoMySQL implements ProdutoConexao {
+
+    private static ProdutoMySQL uniqueInstance;
+
+    private ProdutoMySQL() {
+
+    }
+
+    public static synchronized ProdutoMySQL getInstance() {
+        if (uniqueInstance == null) {
+            uniqueInstance = new ProdutoMySQL();
+        }
+        return uniqueInstance;
+    }
 
     private static final String DRIVER = ("com.mysql.cj.jdbc.Driver");
     private static final String IP = "localhost:3306";
     private static final String DBNAME = "bdprojetosistemas";
     private static final String URL = "jdbc:mysql://" + IP + "/" + DBNAME + "?useTimezone=true&serverTimezone=UTC";
-//    private static final String LOGIN = "gustavo";
-//    private static final String SENHA = "+pao1234";
-    private static final String LOGIN = "root";
-    private static final String SENHA = "";
+    private static final String LOGIN = "gustavo";
+    private static final String SENHA = "+pao1234";
+//    private static final String LOGIN = "root";
+//    private static final String SENHA = "";
 
-    public static Connection getConnection() {
+    @Override
+    public Connection getConnection() {
 
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
 
         try {
