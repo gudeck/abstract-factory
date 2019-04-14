@@ -324,7 +324,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
                     objetoCliente = null;
                     ftxtCpf.setEnabled(true);
                     btnAlterar.setEnabled(false);
-                    btnCadastrar.setEnabled(true);
                     JOptionPane.showMessageDialog(this, "Cliente alterado com sucesso!");
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(this, "Erro de conversão de dados.", "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -344,7 +343,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
         objetoCliente = controladorVisao.buscaCliente();
 
         if (objetoCliente != null) {
-            btnCadastrar.setEnabled(false);
             btnLimpar.setEnabled(true);
             txtNome.setText(objetoCliente.getNome());
             ftxtCpf.setText(objetoCliente.getCpf());
@@ -424,8 +422,6 @@ public class JDGCadastroCliente extends javax.swing.JDialog {
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         limparTela();
-        btnAlterar.setEnabled(false);
-        btnCadastrar.setEnabled(true);
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
